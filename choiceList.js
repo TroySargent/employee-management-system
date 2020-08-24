@@ -26,4 +26,17 @@ const getRoleList = () => {
     });
 };
 
-module.exports = {getEmployeeList, getRoleList};
+const getDepartmentList = () => {
+    return new Promise(function (resolve, reject) {
+        connection.query("SELECT CONCAT(name, ' ', id) AS name FROM department;", (err, data) => {
+            if (err) {
+                return reject(err);
+            }
+            let departmentList = [];
+            data.forEach(row => departmentList.push(row.name)); // push each employee into array from query
+            resolve(departmentList);
+        });
+    });
+};
+
+module.exports = {getEmployeeList, getRoleList, getDepartmentList};
