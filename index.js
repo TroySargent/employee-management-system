@@ -1,6 +1,8 @@
 const inquirer = require("inquirer");
-const sql = require("mysql");
-const addObject = require("./addObject")
+const connection = require("./connection");
+const addObject = require("./addObject");
+const viewObject = require("./viewObject");
+const updateObject = require("./updateObject");
 
 const init = async () => {
     let { action } = await inquirer.prompt({
@@ -8,6 +10,10 @@ const init = async () => {
         message: "What do you want to do?",
         type: "list",
         choices: ["add", "update", "view", "exit"]
+    });
+
+    connection.connect((err) => {
+        if (err) {throw err};
     });
 
     processInitialUserAction(action);
@@ -35,6 +41,7 @@ const processInitialUserAction = async (action) => {
             viewObject(await getObjectForAction(action));
             break;
         case "exit":
+            connection.end();
             return;
     }
 }
