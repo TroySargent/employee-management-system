@@ -2,17 +2,21 @@ const inquirer = require("inquirer");
 const connection = require("./connection");
 
 const deleteObject = async () => {
-    getEmployeeList();
+    await getEmployeeToRemove(await getEmployeeList());
 };
 
 const getEmployeeList = () => {
-    let employeeNames = [];
-    connection.query("SELECT CONCAT(firstName, ' ', lastName) AS name FROM employees;", (err, data) => {
-        if (err) {throw err};
-        data.forEach(row => employeeNames.push(row.name)); // push each employee into array from query
-        getEmployeeToRemove(employeeNames);
-    });
-}
+    return new Promise(function (resolve, reject) {
+        connection.query("SELECT CONCAT(firstName, ' ', lastName) AS name FROM employees;", (err, data) => {
+            if (err) {
+                return reject(err);
+            }
+            let employeeNames = [];
+            data.forEach(row => employeeNames.push(row.name)); // push each employee into array from query
+            resolve(employeeNames);
+        });
+    })
+};
 
 const getEmployeeToRemove = async (employeeNames) => {
     let { employeeToRemove } = await inquirer.prompt({
@@ -21,15 +25,16 @@ const getEmployeeToRemove = async (employeeNames) => {
         type: "list",
         choices: employeeNames
     });
-    removeEmployee(employeeToRemove);
+    await removeEmployee(employeeToRemove);
+    console.log(`Successfully removed ${employeeToRemove} from records`);
 };
 
 const removeEmployee = async (employeeToRemove) => {
     let name = employeeToRemove.split(" "); //split into two parameters for sql query 
-    console.log(name)
     await connection.query("DELETE FROM employees WHERE firstName = ? AND lastName = ?", name, (err, data) => {
-        if (err) {console.log(err)};
-        console.log(`Successfully removed ${employeeToRemove} from records`)
+        if (err) {
+            console.log(err)
+        };
     });
 };
 
