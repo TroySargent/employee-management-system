@@ -20,6 +20,7 @@ const processInitialUserAction = async (action, init) => {
         case "Delete":
             await deleteObject();
             init();
+            break;
         case "Exit":
             process.exit();
     }
