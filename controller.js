@@ -5,22 +5,22 @@ const deleteObject = require("./deleteObject");
 
 const processInitialUserAction = async (action, init) => {    
     switch(action){
-        case "add":
+        case "Add":
             await addObject();
             init();
             break;
-        case "update":
+        case "Update":
             await updateObject();
             init();
             break;
-        case "view":
+        case "View":
             await viewObject();
             init();
             break;
-        case "delete":
+        case "Delete":
             await deleteObject();
             init();
-        case "exit":
+        case "Exit":
             return;
     }
 }

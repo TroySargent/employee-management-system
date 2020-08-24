@@ -2,7 +2,7 @@ const connection = require("./connection");
 
 const getEmployeeList = () => {
     return new Promise(function (resolve, reject) {
-        connection.query("SELECT CONCAT(firstName, ' ', lastName) AS name FROM employees;", (err, data) => {
+        connection.query("SELECT CONCAT(firstName, ' ', lastName, ' ', id) AS name FROM employees;", (err, data) => {
             if (err) {
                 return reject(err);
             }
@@ -15,7 +15,7 @@ const getEmployeeList = () => {
 
 const getRoleList = () => {
     return new Promise(function (resolve, reject) {
-        connection.query("SELECT title FROM role;", (err, data) => {
+        connection.query("SELECT CONCAT(title, ' ', id) AS title FROM role;", (err, data) => {
             if (err) {
                 return reject(err);
             }

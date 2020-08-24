@@ -7,7 +7,7 @@ const addObject = async () => {
 };
 
 const getEmployeeToAdd = async (roleList, employeeNames) => {
-    let info = await inquirer.prompt([{
+    let { firstName, lastName, role, manager } = await inquirer.prompt([{
         name: "firstName",
         message: "What is the employee's first name?",
         type: "input"
@@ -24,15 +24,19 @@ const getEmployeeToAdd = async (roleList, employeeNames) => {
         choices: roleList
     },
     {
-        name: "mananger",
+        name: "manager",
         message: "What is the employee's manager?",
         type: "list",
         choices: employeeNames
     }]);
-    await addEmployeeToTable(info);
+    await addEmployeeToTable(firstName, lastName, role, manager);
 };
 
-const addEmployeeToTable = (info) => {
-    console.log(info)
+const addEmployeeToTable = (firstName, lastName, role, manager) => {
+    roleID = role.split(' ').pop(); // grabs ID value from end of string
+    managerID = manager.split(' ').pop();
+    connection.query("INSERT INTO employees SET ?", {firstName: firstName, lastName: lastName, roleID: roleID, managerID: managerID}, (err) => {
+        if (err) {throw err};
+    })
 }
 module.exports = addObject;

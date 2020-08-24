@@ -7,7 +7,7 @@ const init = async () => {
         name: "action",
         message: "What do you want to do?",
         type: "list",
-        choices: ["add", "update", "view", "delete", "exit"]
+        choices: ["Add", "Update", "View", "Delete", "Exit"]
     });
     
     processInitialUserAction(action, init);
