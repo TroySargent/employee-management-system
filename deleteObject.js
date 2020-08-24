@@ -1,21 +1,9 @@
 const inquirer = require("inquirer");
 const connection = require("./connection");
+const choices = require("./choiceList");
 
 const deleteObject = async () => {
-    await getEmployeeToRemove(await getEmployeeList());
-};
-
-const getEmployeeList = () => {
-    return new Promise(function (resolve, reject) {
-        connection.query("SELECT CONCAT(firstName, ' ', lastName) AS name FROM employees;", (err, data) => {
-            if (err) {
-                return reject(err);
-            }
-            let employeeNames = [];
-            data.forEach(row => employeeNames.push(row.name)); // push each employee into array from query
-            resolve(employeeNames);
-        });
-    })
+    await getEmployeeToRemove(await choices.getEmployeeList());
 };
 
 const getEmployeeToRemove = async (employeeNames) => {
