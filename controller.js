@@ -15,13 +15,13 @@ const processInitialUserAction = async (action, init) => {
             break;
         case "View":
             await viewObject();
-            init();
+            init()
             break;
         case "Delete":
             await deleteObject();
             init();
         case "Exit":
-            return;
+            process.exit();
     }
 }
 
